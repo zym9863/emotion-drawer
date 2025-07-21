@@ -1,103 +1,229 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect } from 'react';
+import TimeCapsuleForm from '@/components/TimeCapsuleForm';
+import TimeCapsuleList from '@/components/TimeCapsuleList';
+import LetGoForm from '@/components/LetGoForm';
+import LetGoList from '@/components/LetGoList';
+import WelcomeGuide from '@/components/WelcomeGuide';
+import { initDemoData } from '@/lib/demo-data';
+import { clsx } from 'clsx';
+import { Clock, Heart, Menu, X, HelpCircle } from 'lucide-react';
+
+type TabType = 'timeCapsule' | 'letGo';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [activeTab, setActiveTab] = useState<TabType>('timeCapsule');
+  const [showForm, setShowForm] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showWelcomeGuide, setShowWelcomeGuide] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // 初始化演示数据和检查是否首次访问
+  useEffect(() => {
+    initDemoData();
+
+    // 检查是否首次访问
+    const hasVisited = localStorage.getItem('emotion-drawer-visited');
+    if (!hasVisited) {
+      setShowWelcomeGuide(true);
+      localStorage.setItem('emotion-drawer-visited', 'true');
+    }
+  }, []);
+
+  const handleSave = () => {
+    setShowForm(false);
+    setRefreshTrigger(prev => prev + 1);
+  };
+
+  const tabs = [
+    {
+      id: 'timeCapsule' as TabType,
+      label: '时光胶囊',
+      icon: Clock,
+      description: '封存此刻的情绪与想法'
+    },
+    {
+      id: 'letGo' as TabType,
+      label: '释怀之约',
+      icon: Heart,
+      description: '与未来的自己约定和解'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm font-bold">情</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-800">情绪抽屉</h1>
+                <p className="text-xs text-gray-600 hidden sm:block">记录情绪，释怀过往</p>
+              </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-1">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setShowForm(false);
+                    }}
+                    className={clsx(
+                      'flex items-center gap-2 px-4 py-2 rounded-lg transition-all',
+                      activeTab === tab.id
+                        ? 'bg-purple-100 text-purple-700 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                    )}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span className="font-medium">{tab.label}</span>
+                  </button>
+                );
+              })}
+
+              <button
+                onClick={() => setShowWelcomeGuide(true)}
+                className="ml-2 p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all"
+                title="使用指南"
+              >
+                <HelpCircle className="w-4 h-4" />
+              </button>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-gray-600 hover:text-gray-800"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden py-4 border-t border-gray-200">
+              <nav className="space-y-2">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        setShowForm(false);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={clsx(
+                        'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left',
+                        activeTab === tab.id
+                          ? 'bg-purple-100 text-purple-700'
+                          : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                      )}
+                    >
+                      <Icon className="w-5 h-5" />
+                      <div>
+                        <div className="font-medium">{tab.label}</div>
+                        <div className="text-sm opacity-75">{tab.description}</div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Form Section */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24">
+              {!showForm ? (
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowForm(true)}
+                    className={clsx(
+                      'w-full py-4 px-6 rounded-xl font-medium transition-all shadow-lg hover:shadow-xl',
+                      activeTab === 'timeCapsule'
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600'
+                        : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600'
+                    )}
+                  >
+                    {activeTab === 'timeCapsule' ? '创建时光胶囊' : '创建释怀之约'}
+                  </button>
+
+                  <div className="mt-6 p-4 bg-white/60 rounded-lg">
+                    <h3 className="font-medium text-gray-800 mb-2">
+                      {tabs.find(tab => tab.id === activeTab)?.label}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {tabs.find(tab => tab.id === activeTab)?.description}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    onClick={() => setShowForm(false)}
+                    className="mb-4 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    ← 返回
+                  </button>
+
+                  {activeTab === 'timeCapsule' ? (
+                    <TimeCapsuleForm onSave={handleSave} />
+                  ) : (
+                    <LetGoForm onSave={handleSave} />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* List Section */}
+          <div className="lg:col-span-2">
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 min-h-[600px]">
+              {activeTab === 'timeCapsule' ? (
+                <TimeCapsuleList refreshTrigger={refreshTrigger} />
+              ) : (
+                <LetGoList refreshTrigger={refreshTrigger} />
+              )}
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-gray-200 mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <p className="text-gray-600 text-sm">
+              "我不知道我怎么了，我也能释怀，并不能释怀"
+            </p>
+            <p className="text-gray-500 text-xs mt-2">
+              在这里，记录情绪，与时间和解
+            </p>
+          </div>
+        </div>
       </footer>
+
+      {/* Welcome Guide */}
+      <WelcomeGuide
+        isOpen={showWelcomeGuide}
+        onClose={() => setShowWelcomeGuide(false)}
+      />
     </div>
   );
 }

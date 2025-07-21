@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 情绪抽屉 (Emotion Drawer)
 
-## Getting Started
+一个基于 Next.js 的情绪记录和释怀应用，帮助用户记录情绪、封存想法，并与未来的自己约定和解。
 
-First, run the development server:
+## 功能特色
+
+### 🕰️ 时光胶囊 (Time Capsule)
+- **私密记录**: 像写日记或投递漂流瓶一样，将当下的情绪、想说的话、无法寄出的信件封存起来
+- **情绪标签**: 为每个胶囊打上情绪标签，记录当时的心境
+- **安全空间**: 完全私密的情感宣泄出口，不被打扰的安全空间
+- **回顾功能**: 随时回顾过往的情绪记录，观察心境变化
+
+### 💙 释怀之约 (Pact of Letting Go)
+- **未来约定**: 创建与未来自己的"和解"约定
+- **定时开启**: 设定未来的日期才能重新开启约定内容
+- **心境对话**: 创造与未来自己对话的机会
+- **释怀引导**: 帮助用户观察心境变化，走向真正的释怀
+
+## 技术栈
+
+- **框架**: Next.js 15.4.2
+- **语言**: TypeScript
+- **样式**: Tailwind CSS 4
+- **图标**: Lucide React
+- **日期处理**: date-fns
+- **包管理**: pnpm
+- **存储**: 本地存储 (LocalStorage)
+
+## 快速开始
+
+### 安装依赖
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 启动开发服务器
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看应用。
 
-## Learn More
+### 构建生产版本
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm build
+pnpm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 项目结构
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+emotion-drawer/
+├── app/                    # Next.js App Router
+│   ├── globals.css        # 全局样式
+│   ├── layout.tsx         # 根布局
+│   └── page.tsx           # 主页面
+├── components/            # React 组件
+│   ├── EmotionSelector.tsx    # 情绪选择器
+│   ├── TimeCapsuleForm.tsx    # 时光胶囊表单
+│   ├── TimeCapsuleList.tsx    # 时光胶囊列表
+│   ├── LetGoForm.tsx          # 释怀之约表单
+│   └── LetGoList.tsx          # 释怀之约列表
+├── lib/                   # 工具库
+│   ├── emotions.ts        # 情绪配置
+│   └── storage.ts         # 本地存储工具
+├── types/                 # TypeScript 类型定义
+│   └── index.ts
+└── public/               # 静态资源
+```
 
-## Deploy on Vercel
+## 使用说明
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 创建时光胶囊
+1. 点击"创建时光胶囊"按钮
+2. 填写胶囊标题
+3. 选择当前情绪
+4. 写下想要封存的内容
+5. 选择是否设为私密
+6. 点击"封存胶囊"完成创建
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 创建释怀之约
+1. 切换到"释怀之约"标签
+2. 点击"创建释怀之约"按钮
+3. 填写约定标题
+4. 选择当前情绪
+5. 写给未来的自己
+6. 设定开启时间
+7. 点击"创建约定"完成创建
+
+### 查看和管理
+- 在列表中点击任意项目可展开查看详细内容
+- 释怀之约只有到达设定时间后才能开启查看
+- 可以删除不需要的记录
+
+## 设计理念
+
+这个应用的设计灵感来源于歌词"我不知道我怎么了，我也能释怀，并不能释怀"，旨在：
+
+- 提供一个安全的情感表达空间
+- 帮助用户记录和理解自己的情绪变化
+- 通过时间的力量促进内心的和解与释怀
+- 创造与未来自己对话的机会
+
+## 开发计划
+
+- [ ] 添加图片上传功能
+- [ ] 实现邮件提醒功能
+- [ ] 添加情绪统计和分析
+- [ ] 支持导出功能
+- [ ] 添加主题切换
+- [ ] 实现数据备份和同步
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进这个项目。
+
+## 许可证
+
+MIT License
