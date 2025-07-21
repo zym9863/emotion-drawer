@@ -1,3 +1,5 @@
+# <div align="right">[English](./README_EN.md) | 中文</div>
+#
 # 情绪抽屉 (Emotion Drawer)
 
 一个基于 Next.js 的情绪记录和释怀应用，帮助用户记录情绪、封存想法，并与未来的自己约定和解。
