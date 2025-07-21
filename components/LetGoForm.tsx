@@ -82,7 +82,7 @@ export default function LetGoForm({ onSave }: LetGoFormProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="这个约定是关于什么的..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-800 placeholder:text-gray-400"
             required
           />
         </div>
@@ -101,7 +101,7 @@ export default function LetGoForm({ onSave }: LetGoFormProps) {
             onChange={(e) => setContent(e.target.value)}
             placeholder="写下你现在的感受、困扰，以及对未来自己的期望..."
             rows={6}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-gray-800 placeholder:text-gray-400"
             required
           />
         </div>

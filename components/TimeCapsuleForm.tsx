@@ -73,7 +73,7 @@ export default function TimeCapsuleForm({ onSave }: TimeCapsuleFormProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="给这个时光胶囊起个名字..."
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-800 placeholder:text-gray-400"
             required
           />
         </div>
@@ -92,7 +92,7 @@ export default function TimeCapsuleForm({ onSave }: TimeCapsuleFormProps) {
             onChange={(e) => setContent(e.target.value)}
             placeholder="写下你想说的话、无法寄出的信件、或是特殊的回忆..."
             rows={6}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none text-gray-800 placeholder:text-gray-400"
             required
           />
         </div>
